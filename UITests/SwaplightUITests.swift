@@ -145,6 +145,15 @@ final class SwaplightUITests: XCTestCase {
         XCTAssertFalse(app.outlines["apps-table"].exists)
     }
 
+    func testQuitSwaplightFromMenuBar() {
+        let app = launch(preview: false)
+        openMenu(app)
+        let quit = app.buttons["Quit Swaplight"]
+        XCTAssertTrue(quit.exists)
+        quit.click()
+        XCTAssertTrue(app.wait(for: .notRunning, timeout: 5))
+    }
+
     func testMemoryPressureIndicatorsInRealMenuBar() {
         for pressure in ["Normal", "Elevated", "Critical"] {
             let app = launch(preview: false, pressure: pressure)

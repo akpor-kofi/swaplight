@@ -60,6 +60,8 @@ struct Overview: View {
                         .buttonStyle(.borderless)
                         .help("Settings")
                         .accessibilityLabel("Settings")
+                    Button("Quit Swaplight") { NSApp.terminate(nil) }
+                        .controlSize(.small)
                 }
             }
             TimelineView(.periodic(from: .now, by: 1)) { _ in
@@ -139,13 +141,12 @@ struct Overview: View {
                 Button("Processes Inspector") { show(.processes) }
                 Spacer()
                 if popover {
-                    Menu {
-                        Button("Refresh", action: store.refresh)
-                        Button("Quit Swaplight") { NSApp.terminate(nil) }
-                    } label: { Image(systemName: "ellipsis.circle") }
-                    .menuStyle(.borderlessButton)
-                    .fixedSize()
-                    .accessibilityLabel("Swaplight commands")
+                    Button(action: store.refresh) {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                    .buttonStyle(.borderless)
+                    .help("Refresh")
+                    .accessibilityLabel("Refresh")
                 }
             }
         }
