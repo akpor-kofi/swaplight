@@ -106,7 +106,7 @@ struct Overview: View {
                 let candidates = store.candidates.sorted {
                     (reviewOrder.firstIndex(of: $0.id) ?? Int.max) < (reviewOrder.firstIndex(of: $1.id) ?? Int.max)
                 }
-                ForEach(candidates.prefix(3)) { row in
+                ForEach(candidates.prefix(5)) { row in
                     Button {
                         if popover { menuSelection = store.menuTarget(for: row.id) }
                         else { show(row.app ? .apps : .processes, selection: row.id) }
