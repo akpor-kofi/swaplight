@@ -1,0 +1,9 @@
+# Prompt for the implementation chat
+
+Implement Swaplight in `/Users/mac/Documents/workspace/swaplight`. The public repository is `https://github.com/akpor-kofi/swaplight`. Read `AGENTS.md`, `README.md`, `docs/architecture.md`, and `docs/ui.md` first. The local ignored `design/Swaplist.pen` is an editable design reference with the earlier name; use the native macOS layouts and approved `design/swaplight-menubar.svg`. The shipped product name is **Swaplight**.
+
+Build and verify a working v1 in Swift, SwiftUI, and AppKit/Darwin. Start with a read-only feasibility build, then implement the complete v1 from the architecture: menu bar RAM/pressure/compression/swap, searchable Apps and Processes views with generic counts and attribution, process tree and flat list, focus history, Keep Running, safe user-initiated Quit/Stop/Force Stop, preferences, and the UI states in the handoff. Use native controls and system appearance. No Go, web UI, privileged helper, auto-termination, or Docker-specific dependency. Show unknown metrics and uncertain attribution honestly.
+
+Add the Xcode app project and shared scheme, and write meaningful tests for data derivation, grouping, PID reuse, and action policy. Build with Xcode, run tests, and launch the actual menu bar app to verify the key UI paths. Verify live sampling against macOS tools and process actions only against an owned disposable test child. Record actual results and limitations. Update the README with reproducible setup and build commands.
+
+Commit and push the verified implementation to the existing public GitHub repository. Use an implementation branch if `main` is protected or if concurrent changes make a direct push inappropriate; report the pushed branch and commit. Do not push the local Pencil draft, signing assets, private data, or raw diagnostics. Do not publish a binary, notarize it, or submit it to the Mac App Store as part of this implementation.
