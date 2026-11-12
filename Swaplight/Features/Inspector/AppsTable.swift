@@ -68,7 +68,7 @@ struct AppsTable: View {
                 && (query.isEmpty || [group.name, group.app.bundleID, String(group.main.pid)]
                     .compactMap { $0 }.contains { $0.localizedStandardContains(query) })
         }.map { group in
-            AppRow(group: group, lastFocus: group.app.bundleID.flatMap { store.focus[$0] },
+            AppRow(group: group, lastFocus: group.app.bundleID.flatMap { store.focus[$0]?.date },
                    protected: store.policy.isProtected(row: group.main, app: group.app, ancestry: [], protections: store.protections),
                    frontmost: group.main.pid == store.frontmost)
         }.sorted { a, b in

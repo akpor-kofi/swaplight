@@ -9,7 +9,7 @@ struct Details: View {
                let group = inventory.apps.first(where: { $0.id == store.appSelection && inventory.isReviewable($0, policy: store.policy) }) {
                 panel {
                     heading(group.name, label: "Selected App", icon: "square.grid.2x2")
-                    let focused = group.app.bundleID.flatMap { store.focus[$0] }
+                    let focused = group.app.bundleID.flatMap { store.focus[$0]?.date }
                     Text(focused.map { "Last observed focus: \($0.formatted(.relative(presentation: .named)))" } ?? "Focus: Not observed")
                         .foregroundStyle(.secondary)
                         .help(focused?.formatted(date: .abbreviated, time: .standard) ?? "Not observed")

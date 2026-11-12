@@ -51,7 +51,9 @@ Example: `Ghostty → zsh → Expo → Node worker`. The worker has its own acti
 
 ## Recommendations
 
-Recommend reviewing large apps that are neither frontmost nor protected, using footprint and last **observed** focus. Unknown focus stays distinct; it must not sort as oldest or imply inactivity. A background job can appear as a **large workload to inspect**, with an activity hint when available, rather than a confident quit recommendation. Exclude system/protected processes, Swaplight itself, stale identities, and ambiguous groups from actionable recommendations. Include a plain-language reason. Keep list order stable while the pointer or keyboard selection is active.
+Rank eligible apps and terminal jobs together once their measured footprint reaches 256 MiB. The score starts at measured footprint. For apps with observed focus, multiply it by `1 + 0.25 × min(hours since observed focus / 2, 1)`. Apps with unknown focus and terminal jobs use their measured footprint as the score. Break ties by larger measured footprint, then lower PID. Show the measured footprint and a plain-language reason. CPU can appear as context for a terminal job.
+
+Exclude frontmost workloads, protected processes, Swaplight itself, stale identities, and ambiguous groups. Preserve the order of existing suggestions while the popover is open so rows stay under the pointer.
 
 ## Process control
 

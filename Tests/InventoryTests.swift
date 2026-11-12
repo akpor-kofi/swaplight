@@ -76,11 +76,37 @@ final class InventoryTests: XCTestCase {
         let three = row(13, 13, path: "/Applications/Three.app/Contents/MacOS/Three")
         let four = row(14, 14, path: "/Applications/Four.app/Contents/MacOS/Four")
         let appList = [one, two, three, four].map(app)
-        let inventory = Inventory(processes: [one, two, three, four], running: appList, prior: nil, at: SystemClock().now)
+        let now = SystemClock().now
+        let inventory = Inventory(processes: [one, two, three, four], running: appList, prior: nil, at: now)
+        let lastFocus = FocusObservation(date: .now, at: now)
         let items = Recommendations.candidates(in: inventory, frontmost: four.pid,
-            policy: ActionPolicy(user: 501, ownPID: 99), protections: [appList[2].protection!], focus: ["test.One": .now])
-        XCTAssertEqual(items.map(\.id), [one.id, two.id])
-        XCTAssertTrue(items[1].reason.contains("focus not observed"))
+            policy: ActionPolicy(user: 501, ownPID: 99), protections: [appList[2].protection!],
+            focus: ["test.One": lastFocus], now: now)
+        XCTAssertEqual(items.map(\.id), [two.id, one.id])
+        XCTAssertTrue(items[0].reason.contains("focus not observed"))
+    }
+
+    func testRecommendationsCompareAppAndJobFootprintsWithBoundedFocusWeight() {
+        let recent = row(11, 11, path: "/Applications/Recent.app/Contents/MacOS/Recent", bytes: 2_000 << 20)
+        let earlier = row(12, 12, path: "/Applications/Earlier.app/Contents/MacOS/Earlier", bytes: 1_800 << 20)
+        let oldest = row(13, 13, path: "/Applications/Oldest.app/Contents/MacOS/Oldest", bytes: 1_700 << 20)
+        let shell = row(20, 20, path: "/bin/zsh", tty: 6)
+        let job = row(21, 21, parent: shell.pid, bytes: 700 << 20, tty: 6)
+        let worker = row(22, 22, parent: job.pid, bytes: 1_500 << 20)
+        let now = SystemClock().now
+        let inventory = Inventory(processes: [recent, earlier, oldest, shell, job, worker],
+                                  running: [recent, earlier, oldest].map(app), prior: nil, at: now)
+        let focus = [
+            "test.Recent": FocusObservation(date: .now, at: now),
+            "test.Earlier": FocusObservation(date: .now, at: now.advanced(by: .seconds(-3_600))),
+            "test.Oldest": FocusObservation(date: .now, at: now.advanced(by: .seconds(-28_800)))
+        ]
+
+        let items = Recommendations.candidates(in: inventory, frontmost: 99,
+            policy: ActionPolicy(user: 501, ownPID: 99), protections: [], focus: focus, now: now)
+
+        XCTAssertEqual(items.map(\.id), [job.id, oldest.id, earlier.id, recent.id])
+        XCTAssertEqual(items.map(\.footprint.known), [Bytes(2_200 << 20), oldest.footprint, earlier.footprint, recent.footprint])
     }
 }
 

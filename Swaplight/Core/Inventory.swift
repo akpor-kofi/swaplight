@@ -174,36 +174,32 @@ struct ReviewCandidate: Identifiable {
 }
 
 enum Recommendations {
+    static let focusBonusWindow: Duration = .seconds(2 * 60 * 60)
+    private static let maxFocusBonus = 0.25
+
     static func candidates(in inventory: Inventory, frontmost: Int32?, policy: ActionPolicy,
-                           protections: [Protection], focus: [String: Date]) -> [ReviewCandidate] {
+                           protections: [Protection], focus: [String: FocusObservation], now: Tick) -> [ReviewCandidate] {
         guard let frontmost else { return [] }
         let threshold: UInt64 = 256 * 1_024 * 1_024
-        let apps = inventory.apps.compactMap { group -> (ReviewCandidate, Date?)? in
+        typealias Ranked = (candidate: ReviewCandidate, footprint: Bytes, score: Double)
+        let apps = inventory.apps.compactMap { group -> Ranked? in
             guard group.app.regular, group.main.pid != frontmost,
                   let footprint = group.footprint.known, footprint.value >= threshold,
                   policy.issue(for: group.main, app: group.app, ancestry: [], ambiguous: false,
                                protections: protections) == nil else { return nil }
             let focused = group.app.bundleID.flatMap { focus[$0] }
-            let reason = focused.map { "Large footprint · focused \($0.formatted(.relative(presentation: .named)))" }
+            let reason = focused.map { "Large footprint · focused \($0.date.formatted(.relative(presentation: .named)))" }
                 ?? "Large footprint · focus not observed"
-            return (ReviewCandidate(id: group.id, name: group.name, reason: reason, footprint: group.footprint, app: true), focused)
-        }.sorted { a, b in
-            switch (a.1, b.1) {
-            case (let x?, let y?) where floor(x.timeIntervalSince1970 / 300) != floor(y.timeIntervalSince1970 / 300): return x < y
-            case (_?, nil): return true
-            case (nil, _?): return false
-            default:
-                if a.0.footprint.known != b.0.footprint.known {
-                    return (a.0.footprint.known?.value ?? 0) > (b.0.footprint.known?.value ?? 0)
-                }
-                return a.0.id.pid < b.0.id.pid
-            }
-        }.map(\.0)
+            let fraction = focused.map { min(1, max(0, $0.at.duration(to: now) / focusBonusWindow)) } ?? 0
+            let candidate = ReviewCandidate(id: group.id, name: group.name, reason: reason,
+                                            footprint: group.footprint, app: true)
+            return (candidate, footprint, Double(footprint.value) * (1 + maxFocusBonus * fraction))
+        }
         var jobMembers: [ProcessID: [ProcessRecord]] = [:]
         for (id, root) in inventory.terminalJobs where inventory.attribution[id] == nil && !inventory.ambiguous.contains(id) {
             if let member = inventory.records[id] { jobMembers[root, default: []].append(member) }
         }
-        let jobs = jobMembers.compactMap { id, members -> ReviewCandidate? in
+        let jobs = jobMembers.compactMap { id, members -> Ranked? in
             guard inventory.attribution[id] == nil, let row = inventory.records[id] else { return nil }
             let footprint = Footprint(members)
             guard let known = footprint.known, known.value >= threshold else { return nil }
@@ -220,11 +216,13 @@ enum Recommendations {
                 $0.formatted(.number.precision(.fractionLength(0))) + "% CPU at job root"
             }
             let reason = "Large job to inspect · " + (cpu ?? "\(members.count) observed")
-            return ReviewCandidate(id: id, name: row.name, reason: reason, footprint: footprint, app: false)
-        }.sorted {
-            let lhs = $0.footprint.known?.value ?? 0, rhs = $1.footprint.known?.value ?? 0
-            return lhs == rhs ? $0.id.pid < $1.id.pid : lhs > rhs
+            let candidate = ReviewCandidate(id: id, name: row.name, reason: reason, footprint: footprint, app: false)
+            return (candidate, known, Double(known.value))
         }
-        return apps + jobs
+        return (apps + jobs).sorted { lhs, rhs in
+            if lhs.score != rhs.score { return lhs.score > rhs.score }
+            if lhs.footprint != rhs.footprint { return lhs.footprint > rhs.footprint }
+            return lhs.candidate.id.pid < rhs.candidate.id.pid
+        }.map(\.candidate)
     }
 }

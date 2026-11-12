@@ -9,6 +9,11 @@ struct Bytes: Comparable, Sendable {
 
 typealias Tick = ContinuousClock.Instant
 
+struct FocusObservation: Sendable {
+    let date: Date
+    let at: Tick
+}
+
 protocol SampleClock: Sendable {
     var now: Tick { get }
     var date: Date { get }

@@ -70,7 +70,7 @@ final class Store {
     private(set) var inventoryFailed = false
     private(set) var pressure: Pressure = .unknown
     private(set) var protections: [Protection]
-    private(set) var focus: [String: Date]
+    private(set) var focus: [String: FocusObservation]
     private(set) var frontmost: Int32?
     private(set) var outcome: ActionStatus?
     private(set) var loginStatus: SMAppService.Status = .notRegistered
@@ -114,7 +114,14 @@ final class Store {
         actions = ActionEngine(controller: controller, clock: clock)
         self.policy = policy
         protections = preferences.protections
-        focus = preferences.focus
+        let now = clock.now
+        let today = clock.date
+        focus = preferences.focus.mapValues { date in
+            // Restore a bounded age from the saved date, then track elapsed time monotonically.
+            let savedAge = Duration.seconds(max(0, today.timeIntervalSince(date)))
+            let age = min(savedAge, Recommendations.focusBonusWindow)
+            return FocusObservation(date: date, at: now.advanced(by: .zero - age))
+        }
         notificationsEnabled = preferences.notifications
     }
 
@@ -270,12 +277,12 @@ final class Store {
     func observe(_ app: RunningApp) {
         frontmost = app.pid
         guard let key = app.bundleID, app.regular else { return }
-        focus[key] = clock.date
+        focus[key] = FocusObservation(date: clock.date, at: clock.now)
         if focus.count > 200 {
-            let recent = focus.sorted { $0.value > $1.value }.prefix(200)
+            let recent = focus.sorted { $0.value.date > $1.value.date }.prefix(200)
             focus = Dictionary(uniqueKeysWithValues: recent.map { ($0.key, $0.value) })
         }
-        preferences.focus = focus
+        preferences.focus = focus.mapValues(\.date)
     }
 
     func clearFocus() {
@@ -296,7 +303,7 @@ final class Store {
     var candidates: [ReviewCandidate] {
         guard inventoryIsFresh, let inventory else { return [] }
         return Recommendations.candidates(in: inventory.value, frontmost: frontmost,
-                                          policy: policy, protections: protections, focus: focus)
+                                          policy: policy, protections: protections, focus: focus, now: clock.now)
     }
 
     func navigate(_ page: InspectorPage, selection: ProcessID? = nil, scope: ProcessScope = .all) {
