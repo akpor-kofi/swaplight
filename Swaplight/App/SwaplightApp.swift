@@ -37,7 +37,7 @@ struct SwaplightApp: App {
             Group {
                 switch store.pressure {
                 case .normal:
-                    Image(.menuMark).renderingMode(.template)
+                    Image(.pressureNormal).renderingMode(.original)
                 case .unknown:
                     HStack(spacing: 3) {
                         Image(.menuMark).renderingMode(.template)

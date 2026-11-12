@@ -146,7 +146,7 @@ final class SwaplightUITests: XCTestCase {
     }
 
     func testMemoryPressureIndicatorsInRealMenuBar() {
-        for pressure in ["Elevated", "Critical"] {
+        for pressure in ["Normal", "Elevated", "Critical"] {
             let app = launch(preview: false, pressure: pressure)
             let item = app.statusItems.firstMatch
             XCTAssertTrue(item.waitForExistence(timeout: 5))
