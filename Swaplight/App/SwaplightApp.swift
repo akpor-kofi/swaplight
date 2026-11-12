@@ -7,7 +7,9 @@ struct SwaplightApp: App {
     init() {
         #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("--ui-fixture") {
-            _store = State(initialValue: DebugFixture.make())
+            let pressure = ProcessInfo.processInfo.environment["SWAPLIGHT_FIXTURE_PRESSURE"]
+                .flatMap(Pressure.init(rawValue:)) ?? .elevated
+            _store = State(initialValue: DebugFixture.make(pressure: pressure))
             return
         }
         #endif
@@ -32,10 +34,19 @@ struct SwaplightApp: App {
         MenuBarExtra {
             Overview(popover: true).environment(store)
         } label: {
-            HStack(spacing: 3) {
-                Image(.menuMark).renderingMode(.template)
-                if store.pressure != .normal {
-                    Image(systemName: store.pressure.symbol)
+            Group {
+                switch store.pressure {
+                case .normal:
+                    Image(.menuMark).renderingMode(.template)
+                case .unknown:
+                    HStack(spacing: 3) {
+                        Image(.menuMark).renderingMode(.template)
+                        Image(systemName: Pressure.unknown.symbol)
+                    }
+                case .elevated:
+                    Image(.pressureElevated).renderingMode(.original)
+                case .critical:
+                    Image(.pressureCritical).renderingMode(.original)
                 }
             }
             .accessibilityLabel("Swaplight, memory pressure: \(store.pressure.rawValue)")

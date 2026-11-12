@@ -13,12 +13,12 @@ final class DebugFixture: MemorySampling, ProcessSampling, ApplicationInventory,
     var notifications = false
     var frontmostPID: Int32? { 701 }
 
-    static func make() -> Store {
+    static func make(pressure: Pressure) -> Store {
         let fixture = DebugFixture()
         fixture.focus["example.browser"] = .now.addingTimeInterval(-2400)
         let store = Store(memory: fixture, processes: fixture, apps: fixture, clock: SystemClock(), preferences: fixture,
                           controller: fixture, policy: ActionPolicy(user: 501, ownPID: 199))
-        store.setPressure(.elevated)
+        store.setPressure(pressure)
         store.start(observeSystem: false)
         return store
     }

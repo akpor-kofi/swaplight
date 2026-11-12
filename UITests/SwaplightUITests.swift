@@ -145,10 +145,26 @@ final class SwaplightUITests: XCTestCase {
         XCTAssertFalse(app.outlines["apps-table"].exists)
     }
 
-    private func launch(fixture: Bool = true, preview: Bool = true) -> XCUIApplication {
+    func testMemoryPressureIndicatorsInRealMenuBar() {
+        for pressure in ["Elevated", "Critical"] {
+            let app = launch(preview: false, pressure: pressure)
+            let item = app.statusItems.firstMatch
+            XCTAssertTrue(item.waitForExistence(timeout: 5))
+            let image = XCTAttachment(screenshot: item.screenshot())
+            image.name = "Menu bar pressure indicator - \(pressure)"
+            image.lifetime = .keepAlways
+            add(image)
+
+            openMenu(app)
+            XCTAssertTrue(text(app, containing: pressure).exists)
+        }
+    }
+
+    private func launch(fixture: Bool = true, preview: Bool = true, pressure: String = "Elevated") -> XCUIApplication {
         let app = XCUIApplication()
         if fixture {
             app.launchArguments = ["--ui-fixture", "--ui-light"]
+            app.launchEnvironment["SWAPLIGHT_FIXTURE_PRESSURE"] = pressure
             if #available(macOS 15.0, *), preview { app.launchArguments += ["--ui-preview"] }
         }
         app.launch()
