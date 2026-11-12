@@ -35,7 +35,7 @@ final class DebugFixture: MemorySampling, ProcessSampling, ApplicationInventory,
          (Int32(707), "Unmeasured App", "example.unmeasured", "/Applications/Unmeasured App.app")].compactMap { pid, name, bundle, path in
             guard let row = rows.first(where: { $0.pid == pid }), !removed.contains(row.id) else { return nil }
             return RunningApp(pid: pid, name: name, bundleID: bundle, bundlePath: path,
-                              executable: row.path, launched: row.id.start?.date, regular: true)
+                              executable: row.path, launched: row.id.start?.date, regular: true, kernelIdentity: nil)
         }
     }
 

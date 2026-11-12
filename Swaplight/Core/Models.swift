@@ -70,6 +70,11 @@ struct ProcessID: Hashable, Sendable {
     let start: Start?
 }
 
+struct KernelAppIdentity: Sendable {
+    let start: Start
+    let uid: UInt32
+}
+
 struct ProcessRecord: Identifiable, Sendable {
     let id: ProcessID
     let name: String
@@ -100,11 +105,14 @@ struct RunningApp: Sendable {
     let executable: String?
     let launched: Date?
     let regular: Bool
+    let kernelIdentity: KernelAppIdentity?
 
     func matches(_ process: ProcessRecord) -> Bool {
         guard pid == process.pid, let executable, executable == process.path,
-              let launched, let start = process.id.start else { return false }
-        return abs(launched.timeIntervalSince(start.date)) < 1
+              let start = process.id.start else { return false }
+        if let launched { return abs(launched.timeIntervalSince(start.date)) < 1 }
+        guard let kernelIdentity else { return false }
+        return kernelIdentity.start == start && kernelIdentity.uid == process.uid
     }
 
     var protection: Protection? {

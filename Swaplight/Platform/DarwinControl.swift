@@ -73,6 +73,7 @@ struct DarwinControl: ProcessControlling {
                                     ambiguous: target.ambiguous || conflict, protections: rules) {
             return .blocked(issue)
         }
+        if target.app != nil, currentApp?.isTerminated != false { return .alreadyGone }
 
         // No await, UI work, or task hop between this check and the OS request.
         guard let finalPath = Kernel.path(pid), finalPath == path else {

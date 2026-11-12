@@ -51,6 +51,34 @@ final class InventoryTests: XCTestCase {
         XCTAssertFalse(inventory.matches(small, query: "1"))
     }
 
+    func testAppWithoutLaunchDateUsesCapturedKernelIdentityToAttributeHelpers() throws {
+        let root = "/Applications/Desktop.app"
+        let main = row(31, 31, path: root + "/Contents/MacOS/Desktop", bytes: 80 << 20)
+        let renderer = row(32, 32, parent: main.pid, path: root + "/Contents/Helpers/Renderer", bytes: 320 << 20)
+        let gpu = row(33, 33, path: root + "/Contents/Helpers/GPU", bytes: 160 << 20)
+        let otherUser = row(34, 34, path: root + "/Contents/Helpers/Other", uid: 502)
+        let start = try XCTUnwrap(main.id.start)
+        let running = RunningApp(pid: main.pid, name: "Desktop", bundleID: "test.desktop", bundlePath: root,
+                                 executable: main.path, launched: nil, regular: true,
+                                 kernelIdentity: KernelAppIdentity(start: start, uid: 501))
+        let now = SystemClock().now
+        let inventory = Inventory(processes: [main, renderer, gpu, otherUser], running: [running], prior: nil, at: now)
+        let group = try XCTUnwrap(inventory.regularAppsByPID[main.pid])
+
+        XCTAssertEqual(group.footprint.known, Bytes(560 << 20))
+        XCTAssertEqual(group.count, 3)
+        XCTAssertEqual(inventory.evidence[renderer.id], .both)
+        XCTAssertEqual(inventory.evidence[gpu.id], .bundle)
+        XCTAssertNil(inventory.attribution[otherUser.id])
+        let policy = ActionPolicy(user: 501, ownPID: 99)
+        XCTAssertEqual(Recommendations.candidates(in: inventory, frontmost: 99, policy: policy,
+                                                  protections: [], focus: [:], now: now).map(\.id), [main.id])
+        XCTAssertFalse(running.matches(row(main.pid, 40, path: main.path)))
+        XCTAssertFalse(running.matches(row(main.pid, 31, path: main.path, uid: 502)))
+        XCTAssertFalse(running.matches(row(main.pid, 31, path: "/elsewhere/Desktop")))
+        XCTAssertFalse(running.matches(row(main.pid, nil, path: main.path)))
+    }
+
     func testReusedPIDAndPartialDataDontInheritIdentityOrActivity() {
         let start = SystemClock().now
         let original = row(9, 1, bytes: 90, cpu: 1_000)
@@ -121,5 +149,5 @@ func row(_ pid: Int32, _ start: UInt64?, parent: Int32 = 1, path: String? = "/op
 func app(_ row: ProcessRecord) -> RunningApp {
     let root = row.path?.components(separatedBy: "/Contents/").first
     return RunningApp(pid: row.pid, name: row.name, bundleID: "test.\(row.name)", bundlePath: root,
-                      executable: row.path, launched: row.id.start?.date, regular: true)
+                      executable: row.path, launched: row.id.start?.date, regular: true, kernelIdentity: nil)
 }

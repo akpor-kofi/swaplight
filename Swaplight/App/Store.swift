@@ -72,6 +72,7 @@ final class Store {
     private(set) var protections: [Protection]
     private(set) var focus: [String: FocusObservation]
     private(set) var frontmost: Int32?
+    private var lastForegroundApp: RunningApp?
     private(set) var outcome: ActionStatus?
     private(set) var loginStatus: SMAppService.Status = .notRegistered
     private(set) var loginError: String?
@@ -216,7 +217,8 @@ final class Store {
         let at = clock.now
         let date = clock.date
         let apps = appInventory.applications()
-        frontmost = appInventory.frontmostPID
+        let pid = appInventory.frontmostPID
+        updateForeground(pid, app: apps.first { $0.pid == pid })
         let prior = invalidInventory ? nil : inventory
         inventoryAttempt = at
         inventoryTask = Task { [weak self, processSampler] in
@@ -275,7 +277,7 @@ final class Store {
     }
 
     func observe(_ app: RunningApp) {
-        frontmost = app.pid
+        updateForeground(app.pid, app: app)
         guard let key = app.bundleID, app.regular else { return }
         focus[key] = FocusObservation(date: clock.date, at: clock.now)
         if focus.count > 200 {
@@ -283,6 +285,11 @@ final class Store {
             focus = Dictionary(uniqueKeysWithValues: recent.map { ($0.key, $0.value) })
         }
         preferences.focus = focus.mapValues(\.date)
+    }
+
+    private func updateForeground(_ pid: Int32?, app: RunningApp?) {
+        frontmost = pid
+        if pid != policy.ownPID { lastForegroundApp = app }
     }
 
     func clearFocus() {
@@ -300,9 +307,16 @@ final class Store {
         Task { await services.notify(value) }
     }
 
+    var activeApp: AppGroup? {
+        guard inventoryIsFresh, let inventory, let app = lastForegroundApp,
+              let group = inventory.value.regularAppsByPID[app.pid], app.matches(group.main),
+              inventory.value.isReviewable(group, policy: policy) else { return nil }
+        return group
+    }
+
     var candidates: [ReviewCandidate] {
         guard inventoryIsFresh, let inventory else { return [] }
-        return Recommendations.candidates(in: inventory.value, frontmost: frontmost,
+        return Recommendations.candidates(in: inventory.value, frontmost: activeApp?.main.pid ?? frontmost,
                                           policy: policy, protections: protections, focus: focus, now: clock.now)
     }
 

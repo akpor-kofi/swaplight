@@ -70,6 +70,36 @@ final class StoreTests: XCTestCase {
         XCTAssertEqual(scenario.sendCount, 1)
     }
 
+    func testActiveFootprintSurvivesSwaplightFocusAndRejectsReusedPID() async throws {
+        let key = "SwaplightTests.\(UUID())"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: key))
+        defer { defaults.removePersistentDomain(forName: key) }
+        let scenario = SampleScenario()
+        let path = "/Applications/Example.app/Contents/MacOS/Example"
+        let active = row(55, 1, path: path, bytes: 512 << 20)
+        scenario.appRecords = [active]
+        scenario.frontmostPID = active.pid
+        let store = makeStore(scenario, LocalPreferences(defaults))
+        store.refresh()
+        try await until { store.activeApp?.id == active.id }
+        XCTAssertEqual(store.activeApp?.footprint.known, active.footprint)
+        XCTAssertFalse(store.candidates.contains { $0.id == active.id })
+
+        scenario.frontmostPID = 999
+        let previous = store.inventory?.at
+        store.refresh()
+        try await until { store.inventory?.at != previous }
+        XCTAssertEqual(store.frontmost, 999)
+        XCTAssertEqual(store.activeApp?.id, active.id)
+        XCTAssertFalse(store.candidates.contains { $0.id == active.id })
+
+        let replacement = row(active.pid, 2, path: path)
+        scenario.appRecords = [replacement]
+        store.refresh()
+        try await until { store.inventory?.value.regularAppsByPID[active.pid]?.id == replacement.id }
+        XCTAssertNil(store.activeApp)
+    }
+
     private func makeStore(_ scenario: SampleScenario, _ prefs: LocalPreferences) -> Store {
         Store(memory: scenario, processes: scenario, apps: scenario, clock: SystemClock(), preferences: prefs,
               controller: scenario, policy: ActionPolicy(user: 501, ownPID: 999))
@@ -91,14 +121,15 @@ private final class SampleScenario: MemorySampling, ProcessSampling, Application
     private var successor: ProcessRecord?
     private let parent = row(42, 1, path: "/opt/example/supervisor")
     let record = row(100, 2, parent: 42)
-    var frontmostPID: Int32? { 999 }
-    func applications() -> [RunningApp] { [] }
+    var frontmostPID: Int32? = 999
+    var appRecords: [ProcessRecord] = []
+    func applications() -> [RunningApp] { appRecords.map(app) }
 
     func sampleMemory() async -> HostMemory {
         HostMemory(total: Bytes(16 << 30), occupied: failed ? nil : Bytes(4 << 30),
                    compressed: failed ? nil : Bytes(512 << 20), swap: failed ? nil : Bytes(0))
     }
-    func sampleProcesses() async -> [ProcessRecord]? { failed ? nil : [parent, successor ?? record] }
+    func sampleProcesses() async -> [ProcessRecord]? { failed ? nil : [parent, successor ?? record] + appRecords }
     func lookUp(_ pid: Int32) -> Lookup { successor == nil ? .present(record) : .gone }
     func send(_ operation: ProcessOperation, to target: Target, policy: ActionPolicy,
               protections: [Protection]) -> ActionOutcome? {

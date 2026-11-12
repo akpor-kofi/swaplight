@@ -95,6 +95,20 @@ struct Overview: View {
                 }
             }
             Divider()
+            if let app = store.activeApp {
+                HStack(spacing: 8) {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(app.name).fontWeight(.medium).lineLimit(1)
+                        Text(store.frontmost == app.main.pid ? "In use" : "Last active")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    Text(app.footprint.formatted).monospacedDigit()
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityIdentifier("active-app-footprint")
+                Divider()
+            }
             Text("Suggested to review").font(.caption.weight(.semibold)).foregroundStyle(.secondary).textCase(.uppercase)
             if !store.inventoryIsFresh {
                 Text(store.inventory == nil && !store.inventoryFailed

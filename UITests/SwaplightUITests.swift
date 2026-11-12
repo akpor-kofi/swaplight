@@ -18,6 +18,9 @@ final class SwaplightUITests: XCTestCase {
     func testAppBreakdownProtectionAndQuit() {
         let app = launch()
         openMenu(app)
+        XCTAssertTrue(text(app, containing: "In use").waitForExistence(timeout: 4))
+        XCTAssertTrue(text(app, containing: "Example Terminal").exists)
+        XCTAssertTrue(text(app, containing: "70 MB").exists)
         app.buttons["Apps Inspector"].click()
         let table = app.outlines["apps-table"]
         XCTAssertTrue(table.waitForExistence(timeout: 5))

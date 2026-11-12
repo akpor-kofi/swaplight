@@ -40,7 +40,7 @@ Use `(PID, process start identity)` for stable selection and action targeting. I
 
 Keep the observed PID tree separate from an attributed app/workload view. Build edges only between observed parents and children with plausible start order. Handle missing parents, reparenting, cycles, helpers launched by macOS, and a process disappearing mid-scan. Rebuild each sample; do not carry stale ownership links forward as facts.
 
-1. Seed observed running apps by app PID and known bundle/executable identity.
+1. Seed observed running apps by app PID and known bundle/executable identity. When AppKit omits the launch date, read the kernel start and owner on both sides of an exact executable match. The inventory and action controller check that identity against their own process reads.
 2. Attribute directly verifiable descendants and helpers associated with the app bundle. Use executable location and ancestry together where available. Do not group by executable basename alone.
 3. For terminal jobs, identify the command root below its interactive shell where defensible and show its observed children. Show a standalone process if a workload root cannot be established. No raw command-line capture required for v1.
 4. Keep unknowns in **Unassigned**. Tag each attributed record with its evidence and confidence. Assign a PID at most once per app grouping; never add app totals and nested job totals into the same aggregate. Show counts as **observed**, with known memory subtotal and an unavailable count if partial.
@@ -53,7 +53,7 @@ Example: `Ghostty → zsh → Expo → Node worker`. The worker has its own acti
 
 Rank eligible apps and terminal jobs together once their measured footprint reaches 256 MiB. The score starts at measured footprint. For apps with observed focus, multiply it by `1 + 0.25 × min(hours since observed focus / 2, 1)`. Apps with unknown focus and terminal jobs use their measured footprint as the score. Break ties by larger measured footprint, then lower PID. Show the measured footprint and a plain-language reason. CPU can appear as context for a terminal job.
 
-Exclude frontmost workloads, protected processes, Swaplight itself, stale identities, and ambiguous groups. Preserve the order of existing suggestions while the popover is open so rows stay under the pointer.
+Show the active app’s measured footprint above the suggestions. If Swaplight takes focus, keep showing the last active app as long as its identity still matches. Exclude frontmost workloads, protected processes, Swaplight itself, stale identities, and ambiguous groups from suggestions. Preserve the order of existing suggestions while the popover is open so rows stay under the pointer.
 
 ## Process control
 
