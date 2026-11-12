@@ -53,7 +53,7 @@ Example: `Ghostty → zsh → Expo → Node worker`. The worker has its own acti
 
 Rank eligible apps and terminal jobs together once their measured footprint reaches 256 MiB. The score starts at measured footprint. For apps with observed focus, multiply it by `1 + 0.25 × min(hours since observed focus / 2, 1)`. Apps with unknown focus and terminal jobs use their measured footprint as the score. Break ties by larger measured footprint, then lower PID. Show the measured footprint and a plain-language reason. CPU can appear as context for a terminal job.
 
-Show the active app’s measured footprint above the suggestions. If Swaplight takes focus, keep showing the last active app as long as its identity still matches. Exclude frontmost workloads, protected processes, Swaplight itself, stale identities, and ambiguous groups from suggestions. Preserve the order of existing suggestions while the popover is open so rows stay under the pointer.
+Show the active app’s measured footprint above the suggestions. Selecting it opens the same review and quit confirmation as selecting a suggested app. If Swaplight takes focus, keep showing the last active app as long as its identity still matches. Exclude frontmost workloads, protected processes, Swaplight itself, stale identities, and ambiguous groups from suggestions. Preserve the order of existing suggestions while the popover is open so rows stay under the pointer.
 
 ## Process control
 

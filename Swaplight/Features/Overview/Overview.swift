@@ -96,17 +96,9 @@ struct Overview: View {
             }
             Divider()
             if let app = store.activeApp {
-                HStack(spacing: 8) {
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(app.name).fontWeight(.medium).lineLimit(1)
-                        Text(store.frontmost == app.main.pid ? "In use" : "Last active")
-                            .font(.caption).foregroundStyle(.secondary)
-                    }
-                    Spacer()
-                    Text(app.footprint.formatted).monospacedDigit()
-                }
-                .accessibilityElement(children: .combine)
-                .accessibilityIdentifier("active-app-footprint")
+                reviewRow(id: app.id, name: app.name,
+                          reason: store.frontmost == app.main.pid ? "In use" : "Last active",
+                          footprint: app.footprint, page: .apps)
                 Divider()
             }
             Text("Suggested to review").font(.caption.weight(.semibold)).foregroundStyle(.secondary).textCase(.uppercase)
@@ -121,24 +113,8 @@ struct Overview: View {
                     (reviewOrder.firstIndex(of: $0.id) ?? Int.max) < (reviewOrder.firstIndex(of: $1.id) ?? Int.max)
                 }
                 ForEach(candidates.prefix(5)) { row in
-                    Button {
-                        if popover { menuSelection = store.menuTarget(for: row.id) }
-                        else { show(row.app ? .apps : .processes, selection: row.id) }
-                    } label: {
-                        HStack(spacing: 8) {
-                            VStack(alignment: .leading, spacing: 3) {
-                                Text(row.name).fontWeight(.medium).lineLimit(1)
-                                Text(row.reason).font(.caption).foregroundStyle(.secondary).lineLimit(1)
-                            }
-                            Spacer()
-                            Text(row.footprint.formatted).monospacedDigit()
-                            Image(systemName: "chevron.right").font(.caption).foregroundStyle(.secondary)
-                        }
-                        .contentShape(Rectangle())
-                        .padding(.vertical, 3)
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("Review \(row.name), \(row.reason), \(row.footprint.formatted)")
+                    reviewRow(id: row.id, name: row.name, reason: row.reason,
+                              footprint: row.footprint, page: row.app ? .apps : .processes)
                 }
             }
             Divider()
@@ -174,6 +150,28 @@ struct Overview: View {
             }
         }
         .accessibilityIdentifier(popover ? "menu-overview" : "inspector-overview")
+    }
+
+    private func reviewRow(id: ProcessID, name: String, reason: String, footprint: Footprint,
+                           page: InspectorPage) -> some View {
+        Button {
+            if popover { menuSelection = store.menuTarget(for: id) }
+            else { show(page, selection: id) }
+        } label: {
+            HStack(spacing: 8) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(name).fontWeight(.medium).lineLimit(1)
+                    Text(reason).font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                }
+                Spacer()
+                Text(footprint.formatted).monospacedDigit()
+                Image(systemName: "chevron.right").font(.caption).foregroundStyle(.secondary)
+            }
+            .contentShape(Rectangle())
+            .padding(.vertical, 3)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Review \(name), \(reason), \(footprint.formatted)")
     }
 
     private func metric(_ name: String, _ value: String?, subtitle: String) -> some View {

@@ -18,9 +18,6 @@ final class SwaplightUITests: XCTestCase {
     func testAppBreakdownProtectionAndQuit() {
         let app = launch()
         openMenu(app)
-        XCTAssertTrue(text(app, containing: "In use").waitForExistence(timeout: 4))
-        XCTAssertTrue(text(app, containing: "Example Terminal").exists)
-        XCTAssertTrue(text(app, containing: "70 MB").exists)
         app.buttons["Apps Inspector"].click()
         let table = app.outlines["apps-table"]
         XCTAssertTrue(table.waitForExistence(timeout: 5))
@@ -125,6 +122,27 @@ final class SwaplightUITests: XCTestCase {
         XCTAssertTrue(text(app, containing: "Exited.").waitForExistence(timeout: 5))
         XCTAssertFalse(app.windows["inspector"].exists)
         XCTAssertFalse(app.outlines["processes-table"].exists)
+    }
+
+    func testQuitActiveAppFromRealMenuBar() {
+        let app = launch(preview: false)
+        openMenu(app)
+        let active = app.buttons["Review Example Terminal, In use, 70 MB"]
+        XCTAssertTrue(active.waitForExistence(timeout: 4))
+        active.click()
+
+        let quit = app.buttons["Quit App…"]
+        XCTAssertTrue(quit.waitForExistence(timeout: 4))
+        quit.click()
+        XCTAssertTrue(text(app, containing: "PID 701.").exists)
+        app.buttons["Cancel"].click()
+        XCTAssertTrue(text(app, containing: "Cancelled.").waitForExistence(timeout: 4))
+
+        quit.click()
+        app.buttons["Quit App"].click()
+        XCTAssertTrue(text(app, containing: "Exited.").waitForExistence(timeout: 5))
+        XCTAssertFalse(app.windows["inspector"].exists)
+        XCTAssertFalse(app.outlines["apps-table"].exists)
     }
 
     private func launch(fixture: Bool = true, preview: Bool = true) -> XCUIApplication {
