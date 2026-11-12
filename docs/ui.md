@@ -2,6 +2,8 @@
 
 Use the approved template mark in [design](../design/swaplight-menubar.svg). Preserve its three rows and opposing arrows. The local `design/Swaplist.pen` file is the editable visual reference; the draft title reflects the earlier name. The product UI says **Swaplight**. The Pencil file is deliberately omitted from Git; this document is the complete handoff for a fresh clone.
 
+The macOS app icon uses the same mark on a navy tile. The [editable artwork](../design/swaplight-app-icon.svg) is the source for the PNGs in `AppIcon.appiconset`.
+
 ## Native surfaces
 
 - **Menu bar:** `MenuBarExtra` in window style; monochrome template icon, with a pressure state that remains legible without color. Accessible label names the state. Opening the menu should be fast even while a scan is in progress.
