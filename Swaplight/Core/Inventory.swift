@@ -22,6 +22,7 @@ struct Inventory: Sendable {
     let parents: [ProcessID: ProcessID]
     let children: [ProcessID: [ProcessID]]
     let apps: [AppGroup]
+    let regularAppsByPID: [Int32: AppGroup]
     let attribution: [ProcessID: ProcessID]
     let evidence: [ProcessID: Evidence]
     let ambiguous: Set<ProcessID>
@@ -127,7 +128,28 @@ struct Inventory: Sendable {
                                             footprint: nil, resident: nil, cpuTime: nil, diskRead: nil, diskWritten: nil)
             return AppGroup(app: app, main: placeholder, members: [], footprint: Footprint([]))
         }
-        apps = (grouped + unverified).sorted { $0.id.pid < $1.id.pid }
+        let appGroups = (grouped + unverified).sorted { $0.id.pid < $1.id.pid }
+        apps = appGroups
+        regularAppsByPID = Dictionary(appGroups.filter { $0.app.regular }.map { ($0.main.pid, $0) },
+                                      uniquingKeysWith: { first, _ in first })
+    }
+
+    // Keep Running is a user choice. Preserve those rows so the rule remains discoverable.
+    func isReviewable(_ row: ProcessRecord, policy: ActionPolicy) -> Bool {
+        row.footprint != nil && policy.issue(for: row, app: regularAppsByPID[row.pid]?.app, ancestry: [],
+                                             ambiguous: ambiguous.contains(row.id), protections: []) == nil
+    }
+
+    func isReviewable(_ group: AppGroup, policy: ActionPolicy) -> Bool {
+        group.footprint.known != nil && policy.issue(for: group.main, app: group.app, ancestry: [],
+                                                      ambiguous: ambiguous.contains(group.id), protections: []) == nil
+    }
+
+    func matches(_ row: ProcessRecord, query: String) -> Bool {
+        if query.isEmpty { return true }
+        if let pid = Int32(query), pid > 0 { return row.pid == pid }
+        return [row.name, row.path, regularAppsByPID[row.pid]?.name].compactMap { $0 }
+            .contains { $0.localizedStandardContains(query) }
     }
 
     func context(for row: ProcessRecord) -> String {

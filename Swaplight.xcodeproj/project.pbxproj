@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8BBA4169CEFF4F49831112E1 /* MenuProcesses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBA4169CEFF4F49831112E2 /* MenuProcesses.swift */; };
 		092C3991BED5577D3A936D95 /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B11D1AE7449DC6FAF9EDB0 /* Workspace.swift */; };
 		1215080483A73EF99F2A38E6 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4F5480F583048D04DF1116 /* Preferences.swift */; };
 		210433DB36395661DCECDF3F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 203DA1EA88CF22D47F1F4A41 /* Cocoa.framework */; };
@@ -62,6 +63,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8BBA4169CEFF4F49831112E2 /* MenuProcesses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuProcesses.swift; path = Features/Overview/MenuProcesses.swift; sourceTree = "<group>"; };
 		135DF3CEE24B7DFE732D01DA /* main.c */ = {isa = PBXFileReference; includeInIndex = 1; path = main.c; sourceTree = "<group>"; };
 		141FB5C88CB34D34BC1ADDFB /* Inventory.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Inventory.swift; path = Core/Inventory.swift; sourceTree = "<group>"; };
 		15A1E1CCF22E77E0123EDAB8 /* Store.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Store.swift; path = App/Store.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				5E5433B57EF7144911527B29 /* Details.swift */,
 				BBE277BFC5F2BCBA215D8AEF /* Inspector.swift */,
 				4D4A7A87239DD6D342F8D356 /* ProcessesTable.swift */,
+				8BBA4169CEFF4F49831112E2 /* MenuProcesses.swift */,
 				DD025135E2A9BE578611626A /* Overview.swift */,
 				C252C6AB2C163E67F80B956B /* SettingsView.swift */,
 				D975837D7781470136CF010E /* DarwinControl.swift */,
@@ -369,6 +372,7 @@
 				33C8A899FEB3C55D950C3CB6 /* Details.swift in Sources */,
 				E552ABDF6F40E73C0A2D1082 /* Inspector.swift in Sources */,
 				5F11E94BC90E77BDAEB93160 /* ProcessesTable.swift in Sources */,
+				8BBA4169CEFF4F49831112E1 /* MenuProcesses.swift in Sources */,
 				3BF72F8B1B79DBD44FB72C5D /* Overview.swift in Sources */,
 				68FCB8C027A3D635A76781E9 /* SettingsView.swift in Sources */,
 				E7A75A801EAB29389747A32D /* DarwinControl.swift in Sources */,

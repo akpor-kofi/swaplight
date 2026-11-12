@@ -5,13 +5,23 @@ struct Overview: View {
     @Environment(\.openWindow) private var openWindow
     @Environment(\.openSettings) private var openSettings
     @State private var reviewOrder: [ProcessID] = []
+    @State private var findingProcess = false
+    @State private var menuSelection: Target?
     let popover: Bool
     var visibilityKey = "popover"
 
     var body: some View {
         Group {
             if popover {
-                content.frame(width: 316).padding(14)
+                Group {
+                    if findingProcess || menuSelection != nil {
+                        MenuProcesses(selection: $menuSelection, back: goBack, inspect: inspect)
+                    } else {
+                        content
+                    }
+                }
+                .frame(width: 316, alignment: .leading)
+                .padding(14)
             } else {
                 ScrollView { content.frame(maxWidth: 520, alignment: .leading).padding(24) }
             }
@@ -20,7 +30,13 @@ struct Overview: View {
             reviewOrder = store.candidates.map(\.id)
             if popover { store.setVisible(visibilityKey, true) }
         }
-        .onDisappear { if popover { store.setVisible(visibilityKey, false) } }
+        .onDisappear {
+            if popover {
+                store.setVisible(visibilityKey, false)
+                findingProcess = false
+                menuSelection = nil
+            }
+        }
         .onChange(of: store.candidates.map(\.id), initial: true) { _, ids in
             if popover {
                 reviewOrder = reviewOrder.filter { ids.contains($0) } + ids.filter { !reviewOrder.contains($0) }
@@ -85,14 +101,15 @@ struct Overview: View {
                      ? "Reading processes…" : "Suggestions need a fresh process sample.")
                     .foregroundStyle(.secondary)
             } else if store.candidates.isEmpty {
-                Text("No apps suggested to quit right now.").foregroundStyle(.secondary)
+                Text("No workloads suggested right now.").foregroundStyle(.secondary)
             } else {
                 let candidates = store.candidates.sorted {
                     (reviewOrder.firstIndex(of: $0.id) ?? Int.max) < (reviewOrder.firstIndex(of: $1.id) ?? Int.max)
                 }
                 ForEach(candidates.prefix(3)) { row in
                     Button {
-                        show(row.app ? .apps : .processes, selection: row.id)
+                        if popover { menuSelection = store.menuTarget(for: row.id) }
+                        else { show(row.app ? .apps : .processes, selection: row.id) }
                     } label: {
                         HStack(spacing: 8) {
                             VStack(alignment: .leading, spacing: 3) {
@@ -111,9 +128,25 @@ struct Overview: View {
                 }
             }
             Divider()
+            if popover {
+                Button {
+                    findingProcess = true
+                } label: {
+                    Label("Find a Process…", systemImage: "magnifyingglass")
+                }
+                if let status = store.outcome {
+                    Button {
+                        menuSelection = status.target
+                    } label: {
+                        Label("Last action: \(status.target.name)", systemImage: "clock")
+                            .lineLimit(1)
+                    }
+                    .buttonStyle(.borderless)
+                }
+            }
             HStack {
-                Button("All Apps") { show(.apps) }
-                Button("All Processes") { show(.processes) }
+                Button("Apps Inspector") { show(.apps) }
+                Button("Processes Inspector") { show(.processes) }
                 Spacer()
                 if popover {
                     Menu {
@@ -162,6 +195,17 @@ struct Overview: View {
         let seconds = max(0, oldest.duration(to: store.currentTime).components.seconds)
         let age = seconds < 5 ? "just now" : seconds < 60 ? "\(seconds)s ago" : "\(seconds / 60)m ago"
         return store.memoryIsStale || store.swapIsStale ? "Last sample \(age)" : "Updated \(age)"
+    }
+
+    private func goBack() {
+        if menuSelection != nil { menuSelection = nil }
+        else { findingProcess = false }
+    }
+
+    private func inspect(_ target: Target) {
+        let app = store.inventory?.value.regularAppsByPID[target.row.pid]
+        let hasAppRow = app.map { store.inventory?.value.isReviewable($0, policy: store.policy) == true } ?? false
+        show(hasAppRow ? .apps : .processes, selection: target.row.id)
     }
 
     private func show(_ page: InspectorPage, selection: ProcessID? = nil) {

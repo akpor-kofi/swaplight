@@ -53,8 +53,8 @@ struct AppsTable: View {
                 let searching = !store.query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
                 InspectorEmpty(title: searching ? "No matching apps" : "No apps to show",
                                icon: searching ? "magnifyingglass" : "square.grid.2x2",
-                               description: searching ? "Try another app name, bundle identifier or PID."
-                                   : "App groups appear as macOS reports them.",
+                               description: searching ? "Try another name, bundle identifier or PID. Only apps with a measured footprint are listed."
+                                   : "Apps appear here when Swaplight can read their footprint and verify their identity.",
                                clear: searching ? { store.query = "" } : nil)
             }
         }
@@ -64,8 +64,9 @@ struct AppsTable: View {
         guard let snapshot = store.inventory?.value else { return [] }
         let query = store.query.trimmingCharacters(in: .whitespacesAndNewlines)
         return snapshot.apps.filter { group in
-            query.isEmpty || [group.name, group.app.bundleID, String(group.main.pid)]
-                .compactMap { $0 }.contains { $0.localizedStandardContains(query) }
+            snapshot.isReviewable(group, policy: store.policy)
+                && (query.isEmpty || [group.name, group.app.bundleID, String(group.main.pid)]
+                    .compactMap { $0 }.contains { $0.localizedStandardContains(query) })
         }.map { group in
             AppRow(group: group, lastFocus: group.app.bundleID.flatMap { store.focus[$0] },
                    protected: store.policy.isProtected(row: group.main, app: group.app, ancestry: [], protections: store.protections),

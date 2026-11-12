@@ -9,7 +9,7 @@ final class SwaplightUITests: XCTestCase {
         openMenu(app)
         XCTAssertTrue(text(app, containing: "Memory pressure").exists)
         XCTAssertTrue(text(app, containing: "Compressed:").exists)
-        app.buttons["All Processes"].click()
+        app.buttons["Processes Inspector"].click()
         let table = app.outlines["processes-table"]
         XCTAssertTrue(table.waitForExistence(timeout: 5))
         XCTAssertTrue(app.windows.firstMatch.exists)
@@ -18,11 +18,12 @@ final class SwaplightUITests: XCTestCase {
     func testAppBreakdownProtectionAndQuit() {
         let app = launch()
         openMenu(app)
-        app.buttons["All Apps"].click()
+        app.buttons["Apps Inspector"].click()
         let table = app.outlines["apps-table"]
         XCTAssertTrue(table.waitForExistence(timeout: 5))
         let browser = row(table, containing: "Example Browser")
         XCTAssertTrue(browser.waitForExistence(timeout: 4), table.debugDescription)
+        XCTAssertFalse(row(table, containing: "Unmeasured App").exists)
         browser.click()
         let breakdown = app.buttons["View 2 Processes"]
         XCTAssertTrue(breakdown.waitForExistence(timeout: 4))
@@ -37,7 +38,8 @@ final class SwaplightUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Clear Scope"].exists)
         XCTAssertTrue(app.staticTexts["2 observed"].exists)
         app.buttons["Clear Scope"].click()
-        XCTAssertTrue(app.staticTexts["7 observed"].exists)
+        XCTAssertTrue(app.staticTexts["5 observed"].exists)
+        XCTAssertFalse(row(app.outlines["processes-table"], containing: "SystemFixture").exists)
 
         // Back to the same app, then verify the normal quit UI with the simulator.
         let sidebar = app.descendants(matching: .any).matching(identifier: "Sidebar").firstMatch
@@ -53,7 +55,7 @@ final class SwaplightUITests: XCTestCase {
     func testSearchCancelTimeoutAndSeparateForceConfirmation() {
         let app = launch()
         openMenu(app)
-        app.buttons["All Processes"].click()
+        app.buttons["Processes Inspector"].click()
         let table = app.outlines["processes-table"]
         XCTAssertTrue(table.waitForExistence(timeout: 5))
         search(app, "no-such-fixture")
@@ -90,11 +92,43 @@ final class SwaplightUITests: XCTestCase {
         XCTAssertTrue(text(app, containing: "Exited.").waitForExistence(timeout: 5))
     }
 
-    private func launch(fixture: Bool = true) -> XCUIApplication {
+    func testStopAndForceFromRealMenuBarWithoutInspector() {
+        let app = launch(preview: false)
+        openMenu(app)
+        app.buttons["Find a Process…"].click()
+        let search = app.textFields["menu-process-search"]
+        XCTAssertTrue(search.waitForExistence(timeout: 4))
+        search.click()
+        search.typeText("704")
+        let worker = app.buttons["Review FixtureWorker · PID 704"]
+        XCTAssertTrue(worker.waitForExistence(timeout: 4))
+        worker.click()
+
+        let stop = app.buttons["Stop Process…"]
+        XCTAssertTrue(stop.waitForExistence(timeout: 4))
+        XCTAssertFalse(app.outlines["processes-table"].exists)
+        stop.click()
+        XCTAssertTrue(text(app, containing: "PID 704.").exists)
+        app.buttons["Cancel"].click()
+        XCTAssertTrue(text(app, containing: "Cancelled.").waitForExistence(timeout: 4))
+
+        stop.click()
+        app.buttons["Stop Process"].click()
+        let force = app.buttons["Review Force Stop…"]
+        XCTAssertTrue(force.waitForExistence(timeout: 10))
+        force.click()
+        XCTAssertTrue(text(app, containing: "Unsaved work").exists)
+        app.buttons["Force Stop"].click()
+        XCTAssertTrue(text(app, containing: "Exited.").waitForExistence(timeout: 5))
+        XCTAssertFalse(app.windows["inspector"].exists)
+        XCTAssertFalse(app.outlines["processes-table"].exists)
+    }
+
+    private func launch(fixture: Bool = true, preview: Bool = true) -> XCUIApplication {
         let app = XCUIApplication()
         if fixture {
             app.launchArguments = ["--ui-fixture", "--ui-light"]
-            if #available(macOS 15.0, *) { app.launchArguments += ["--ui-preview"] }
+            if #available(macOS 15.0, *), preview { app.launchArguments += ["--ui-preview"] }
         }
         app.launch()
         return app
@@ -105,7 +139,7 @@ final class SwaplightUITests: XCTestCase {
         let item = app.statusItems.firstMatch
         XCTAssertTrue(item.waitForExistence(timeout: 5), "Swaplight should expose a status item")
         item.click()
-        XCTAssertTrue(app.buttons["All Apps"].waitForExistence(timeout: 4))
+        XCTAssertTrue(app.buttons["Apps Inspector"].waitForExistence(timeout: 4))
     }
 
     private func search(_ app: XCUIApplication, _ query: String) {

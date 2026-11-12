@@ -6,7 +6,7 @@ struct Details: View {
     var body: some View {
         Group {
             if let inventory = store.inventory?.value, store.page == .apps,
-               let group = inventory.apps.first(where: { $0.id == store.appSelection }) {
+               let group = inventory.apps.first(where: { $0.id == store.appSelection && inventory.isReviewable($0, policy: store.policy) }) {
                 panel {
                     heading(group.name, label: "Selected App", icon: "square.grid.2x2")
                     let focused = group.app.bundleID.flatMap { store.focus[$0] }
@@ -21,18 +21,20 @@ struct Details: View {
                     field("Owner", owner(group.main))
                     field("Executable", group.main.path ?? "Unavailable", path: true)
                     Divider()
-                    if group.main.id.start != nil {
-                        Button("View \(group.count) Processes") {
-                            store.navigate(.processes, selection: group.id, scope: .app(group.id))
+                    let contributors = group.members.filter { inventory.isReviewable($0, policy: store.policy) }
+                    if !contributors.isEmpty {
+                        Button("View \(contributors.count) Processes") {
+                            let main = contributors.first { $0.id == group.id }
+                            store.navigate(.processes, selection: main?.id, scope: .app(group.id))
                         }
                     }
                     if let target = store.target(for: group.main, app: group.app) {
                         actions(target, operation: .quit)
                     }
-                    if !group.members.isEmpty {
+                    if !contributors.isEmpty {
                         Divider()
                         Text("Observed contributors").font(.headline)
-                        ForEach(group.members.sorted { ($0.footprint?.value ?? 0) > ($1.footprint?.value ?? 0) }) { row in
+                        ForEach(contributors.sorted { ($0.footprint?.value ?? 0) > ($1.footprint?.value ?? 0) }) { row in
                             Button {
                                 store.navigate(.processes, selection: row.id, scope: .app(group.id))
                             } label: {
@@ -78,7 +80,9 @@ struct Details: View {
                         return Duration.seconds(seconds).formatted(.units(allowed: [.days, .hours, .minutes, .seconds], width: .abbreviated, maximumUnitCount: 2))
                     } ?? "Unavailable")
                     Divider()
-                    if let target = store.target(for: row) { actions(target, operation: .stop) }
+                    if let target = store.menuTarget(for: row.id) {
+                        actions(target, operation: target.app == nil ? .stop : .quit)
+                    }
                 }
             } else {
                 let wasSelected = (store.page == .apps && store.appSelection != nil)

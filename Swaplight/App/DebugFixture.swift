@@ -31,7 +31,8 @@ final class DebugFixture: MemorySampling, ProcessSampling, ApplicationInventory,
 
     func applications() -> [RunningApp] {
         [(Int32(700), "Example Browser", "example.browser", chrome),
-         (Int32(701), "Example Terminal", "example.terminal", terminal)].compactMap { pid, name, bundle, path in
+         (Int32(701), "Example Terminal", "example.terminal", terminal),
+         (Int32(707), "Unmeasured App", "example.unmeasured", "/Applications/Unmeasured App.app")].compactMap { pid, name, bundle, path in
             guard let row = rows.first(where: { $0.pid == pid }), !removed.contains(row.id) else { return nil }
             return RunningApp(pid: pid, name: name, bundleID: bundle, bundlePath: path,
                               executable: row.path, launched: row.id.start?.date, regular: true)
@@ -59,7 +60,9 @@ final class DebugFixture: MemorySampling, ProcessSampling, ApplicationInventory,
             row(703, 702, "/opt/example/dev-server", 400 << 20, tty: 8),
             row(704, 703, "/opt/example/FixtureWorker", 190 << 20, tty: 8),
             row(705, 1, "\(chrome)/Contents/Helpers/Example Helper", 80 << 20),
-            row(706, 703, "/opt/example/DeniedWorker", nil, tty: 8)
+            row(706, 703, "/opt/example/DeniedWorker", nil, tty: 8),
+            row(707, 1, "/Applications/Unmeasured App.app/Contents/MacOS/Unmeasured App", nil),
+            row(708, 1, "/System/Library/Example/SystemFixture", 2 << 20)
         ]
     }
 

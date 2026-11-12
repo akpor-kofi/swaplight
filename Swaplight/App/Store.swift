@@ -16,7 +16,7 @@ enum InspectorPage: String, CaseIterable, Identifiable {
 }
 
 enum ProcessScope: Hashable {
-    case all, mine, unassigned, app(ProcessID)
+    case all, unassigned, app(ProcessID)
 }
 
 struct Confirmation: Identifiable {
@@ -25,6 +25,22 @@ struct Confirmation: Identifiable {
     let target: Target
     let context: String
     let revision: Int
+
+    var title: String { "\(operation.rawValue): \(target.name)?" }
+
+    var message: String {
+        let pid = target.row.pid
+        switch operation {
+        case .quit:
+            return "PID \(pid). The app can ask you to save work before it quits. Work running inside the app may be interrupted."
+        case .stop:
+            return "PID \(pid). \(context)Only this process will receive a stop request. Work may be interrupted, and a watcher may restart it."
+        case .force:
+            let scope = target.app == nil ? "Only PID \(pid) will receive a force stop request."
+                : "This will force quit the app at PID \(pid)."
+            return "\(scope) Unsaved work may be lost."
+        }
+    }
 }
 
 struct ActionStatus {
@@ -297,6 +313,11 @@ final class Store {
                       ambiguous: inventory.value.ambiguous.contains(row.id))
     }
 
+    func menuTarget(for id: ProcessID) -> Target? {
+        guard let inventory = inventory?.value, let row = inventory.records[id] else { return nil }
+        return target(for: row, app: inventory.regularAppsByPID[row.pid]?.app)
+    }
+
     private func ancestry(_ id: ProcessID) -> [ProcessRecord] {
         guard let inventory = inventory?.value else { return [] }
         var next = inventory.parents[id]
@@ -310,7 +331,7 @@ final class Store {
 
     func issue(_ target: Target) -> String? {
         guard inventoryIsFresh else { return "Process data is stale or unavailable. Refresh to act." }
-        if target.app == nil, inventory?.value.apps.contains(where: { $0.id == target.row.id && $0.app.regular }) == true {
+        if target.app == nil, inventory?.value.regularAppsByPID[target.row.pid] != nil {
             return "Use Quit App in Apps for this process."
         }
         return policy.issue(for: target.row, app: target.app, ancestry: ancestry(target.row.id),
@@ -338,20 +359,26 @@ final class Store {
     }
 
     func propose(_ operation: ProcessOperation, target: Target) {
-        guard !actionWaiting, issue(target) == nil, operation != .force || canForce(target) else { return }
+        confirmation = review(operation, target: target)
+    }
+
+    func review(_ operation: ProcessOperation, target: Target) -> Confirmation? {
+        guard !actionWaiting, issue(target) == nil, operation != .force || canForce(target) else { return nil }
         let parent = inventory?.value.parents[target.row.id].flatMap { inventory?.value.records[$0]?.name }
         let context = parent.map { "Observed parent: \($0). " } ?? ""
-        confirmation = Confirmation(operation: operation, target: target, context: context, revision: revision)
+        return Confirmation(operation: operation, target: target, context: context, revision: revision)
     }
 
     func cancel(_ proposal: Confirmation) {
-        if proposal.operation != .force { outcome = ActionStatus(target: proposal.target, outcome: .cancelled) }
-        confirmation = nil
+        if proposal.operation != .force && !actionWaiting {
+            outcome = ActionStatus(target: proposal.target, outcome: .cancelled)
+        }
+        if confirmation?.id == proposal.id { confirmation = nil }
     }
 
     func confirm(_ proposal: Confirmation) async {
         let original = proposal.target
-        confirmation = nil
+        if confirmation?.id == proposal.id { confirmation = nil }
         guard !actionWaiting else { return }
         guard proposal.revision == revision, inventoryIsFresh, let inventory else {
             outcome = ActionStatus(target: original, outcome: .blocked("Process data is stale. Refresh and review the target."))

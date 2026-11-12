@@ -35,8 +35,7 @@ struct ProcessesTable: View {
                      ? "\(result.count) observed" : (result.count == 1 ? "1 match" : "\(result.count) matches"))
                     .font(.caption).foregroundStyle(.secondary).monospacedDigit()
                 Picker("Process scope", selection: $store.scope) {
-                    Text("All Processes").tag(ProcessScope.all)
-                    Text("My Processes").tag(ProcessScope.mine)
+                    Text("My Workloads").tag(ProcessScope.all)
                     Text("Unassigned").tag(ProcessScope.unassigned)
                     if case .app(let id) = store.scope {
                         Text(store.inventory?.value.apps.first { $0.id == id }?.name ?? "Selected App")
@@ -69,7 +68,7 @@ struct ProcessesTable: View {
                     let searching = !store.query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
                     InspectorEmpty(title: searching ? "No matching processes" : "No processes in this scope",
                                    icon: searching ? "magnifyingglass" : "list.bullet.indent",
-                                   description: searching ? "Try another name, executable or PID." : "Choose a different scope or refresh the inventory.",
+                                   description: searching ? "Try another name, executable or PID. System processes and missing footprints are hidden." : "This scope has no measured user workloads to review.",
                                    clear: searching ? { store.query = "" } : nil)
                 }
             }
@@ -132,7 +131,7 @@ struct ProcessesTable: View {
     }
 
     private func isExpanded(_ row: ProcessRow) -> Bool {
-        !collapsed.contains(row.id) && (expanded.contains(row.id) || row.pid == 1)
+        !collapsed.contains(row.id) && expanded.contains(row.id)
     }
 
     private var rows: (rows: [ProcessRow], count: Int) {
@@ -141,21 +140,19 @@ struct ProcessesTable: View {
         let scoped = inventory.records.filter { id, row in
             switch store.scope {
             case .all: true
-            case .mine: row.uid == store.policy.user
             case .unassigned: inventory.attribution[id] == nil
             case .app(let app): inventory.attribution[id] == app
             }
         }
-        let matching = scoped.filter { _, row in
-            query.isEmpty || [row.name, row.path, String(row.pid)].compactMap { $0 }.contains {
-                $0.localizedStandardContains(query)
-            }
-        }
+        let reviewable = scoped.filter { inventory.isReviewable($0.value, policy: store.policy) }
+        let matching = reviewable.filter { inventory.matches($0.value, query: query) }
         var ids = Set(matching.keys)
-        if !flat && !query.isEmpty {
+        if !flat {
             for id in matching.keys {
                 var parent = inventory.parents[id]
-                while let key = parent, scoped[key] != nil, ids.insert(key).inserted {
+                while let key = parent, let row = scoped[key],
+                      reviewable[key] != nil || (row.isShell && row.uid == store.policy.user && row.footprint != nil),
+                      ids.insert(key).inserted {
                     parent = inventory.parents[key]
                 }
             }
@@ -171,7 +168,7 @@ struct ProcessesTable: View {
 
         func sorted(_ ids: [ProcessID], depth: Int) -> [ProcessRow] {
             ids.compactMap { id in
-                scoped[id].map { ProcessRow(process: $0, context: inventory.context(for: $0),
+                scoped[id].map { ProcessRow(process: $0, context: reviewable[id] == nil ? "Shell · context only" : inventory.context(for: $0),
                                             depth: depth, expandable: byParent[id] != nil) }
             }.sorted { a, b in
                 for key in sort {

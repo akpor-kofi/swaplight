@@ -61,7 +61,7 @@ struct Inspector: View {
             store.setVisible("inspector", false)
             store.confirmation = nil
         }
-        .alert(store.confirmation.map { "\($0.operation.rawValue): \($0.target.name)?" } ?? "Process action",
+        .alert(store.confirmation?.title ?? "Process action",
                isPresented: Binding(get: { store.confirmation != nil }, set: { if !$0 { store.confirmation = nil } }),
                presenting: store.confirmation) { proposal in
             Button("Cancel", role: .cancel) { store.cancel(proposal) }.keyboardShortcut(.defaultAction)
@@ -69,7 +69,7 @@ struct Inspector: View {
                 Task { await store.confirm(proposal) }
             }
         } message: { proposal in
-            Text(confirmationMessage(proposal))
+            Text(proposal.message)
         }
     }
 
@@ -120,20 +120,6 @@ struct Inspector: View {
         .padding(.vertical, 8)
         .onChange(of: status.outcome) { _, value in
             AccessibilityNotification.Announcement(value.message).post()
-        }
-    }
-
-    private func confirmationMessage(_ proposal: Confirmation) -> String {
-        let pid = proposal.target.row.pid
-        switch proposal.operation {
-        case .quit:
-            return "PID \(pid). The app can ask you to save work before it quits. Work running inside the app may be interrupted."
-        case .stop:
-            return "PID \(pid). \(proposal.context)Only this process will receive a stop request. Its parent and siblings won’t be signaled. Work may be interrupted, and a watcher may restart the process."
-        case .force:
-            let scope = proposal.target.app == nil ? "Only PID \(pid) will receive a force stop request."
-                : "This will force quit the app at PID \(pid)."
-            return "\(scope) Unsaved work may be lost."
         }
     }
 }

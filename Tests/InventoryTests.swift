@@ -36,6 +36,21 @@ final class InventoryTests: XCTestCase {
         XCTAssertEqual(inventory.apps.flatMap(\.members).count, Set(inventory.apps.flatMap(\.members).map(\.id)).count)
     }
 
+    func testReviewListsHideSystemAndMissingFootprintsWithoutAMemoryCutoff() {
+        let policy = ActionPolicy(user: 501, ownPID: 99)
+        let small = row(10, 1, bytes: 1_024)
+        let unreadable = row(11, 2, bytes: nil)
+        let system = row(12, 3, path: "/System/Library/Example", bytes: 30 << 20)
+        let otherUser = row(13, 4, uid: 502, bytes: 30 << 20)
+        let appWithUnknownFootprint = row(14, 5, path: "/Applications/Example.app/Contents/MacOS/Example", bytes: nil)
+        let inventory = Inventory(processes: [small, unreadable, system, otherUser, appWithUnknownFootprint],
+                                  running: [app(appWithUnknownFootprint)], prior: nil, at: SystemClock().now)
+        XCTAssertEqual(inventory.records.values.filter { inventory.isReviewable($0, policy: policy) }.map(\.id), [small.id])
+        XCTAssertTrue(inventory.apps.filter { inventory.isReviewable($0, policy: policy) }.isEmpty)
+        XCTAssertTrue(inventory.matches(small, query: "10"))
+        XCTAssertFalse(inventory.matches(small, query: "1"))
+    }
+
     func testReusedPIDAndPartialDataDontInheritIdentityOrActivity() {
         let start = SystemClock().now
         let original = row(9, 1, bytes: 90, cpu: 1_000)

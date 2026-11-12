@@ -44,7 +44,8 @@ Keep the observed PID tree separate from an attributed app/workload view. Build 
 2. Attribute directly verifiable descendants and helpers associated with the app bundle. Use executable location and ancestry together where available. Do not group by executable basename alone.
 3. For terminal jobs, identify the command root below its interactive shell where defensible and show its observed children. Show a standalone process if a workload root cannot be established. No raw command-line capture required for v1.
 4. Keep unknowns in **Unassigned**. Tag each attributed record with its evidence and confidence. Assign a PID at most once per app grouping; never add app totals and nested job totals into the same aggregate. Show counts as **observed**, with known memory subtotal and an unavailable count if partial.
-5. Docker, browsers, editors, and coding agents follow these rules. Guest processes inside a VM aren't host PIDs. Tabs and app-level task state can't be inferred from process names; later integrations are optional, capability-specific adapters.
+5. Review lists focus on measured user workloads eligible for review under the base action policy. Protected system entries and unreadable footprints stay out of these lists; a shell can appear as read-only tree context for an observed workload. Keep Running remains visible for user-managed protection.
+6. Docker, browsers, editors, and coding agents follow these rules. Guest processes inside a VM aren't host PIDs. Tabs and app-level task state can't be inferred from process names; later integrations are optional, capability-specific adapters.
 
 Example: `Ghostty → zsh → Expo → Node worker`. The worker has its own action. The parent tree is useful context, not a list of targets to kill. The initial release does not send a signal to a process group or recursively stop descendants. A watcher may restart a worker; report that, and never retry against the replacement automatically.
 
@@ -54,7 +55,7 @@ Recommend reviewing large apps that are neither frontmost nor protected, using f
 
 ## Process control
 
-Actions are user-initiated and independent of sampling. The controller owns eligibility and rechecks the target at execution time; hiding a button is not an authorization mechanism.
+Actions are user-initiated and independent of sampling. The menu bar popover can search and review a target, confirm a request and show its outcome in place. The inspector is optional. The controller owns eligibility and rechecks the target at execution time; hiding a button is not an authorization mechanism.
 
 | Action | Behavior |
 |---|---|
