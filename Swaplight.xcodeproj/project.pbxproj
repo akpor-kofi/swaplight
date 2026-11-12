@@ -1,0 +1,719 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		092C3991BED5577D3A936D95 /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B11D1AE7449DC6FAF9EDB0 /* Workspace.swift */; };
+		1215080483A73EF99F2A38E6 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4F5480F583048D04DF1116 /* Preferences.swift */; };
+		210433DB36395661DCECDF3F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 203DA1EA88CF22D47F1F4A41 /* Cocoa.framework */; };
+		2B603C2C875439B679CF9F7B /* SwaplightUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462907860877214CD336D964 /* SwaplightUITests.swift */; };
+		33C8A899FEB3C55D950C3CB6 /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5433B57EF7144911527B29 /* Details.swift */; };
+		3BF72F8B1B79DBD44FB72C5D /* Overview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD025135E2A9BE578611626A /* Overview.swift */; };
+		3FAEA5FF1AEB885A4875081D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 511D5C18B2DD323CC56E26B7 /* Assets.xcassets */; };
+		40D032C422C41D9362F4870B /* AppsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF6BBB827B551498F2133EE /* AppsTable.swift */; };
+		4825BF24662387699430CBBC /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A1E1CCF22E77E0123EDAB8 /* Store.swift */; };
+		4A0535747D38AFFF32A3AD92 /* DarwinSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2C9E6B70F270CAAAE1671E /* DarwinSampler.swift */; };
+		5CE76F2BD6B4198B7B25AADF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 203DA1EA88CF22D47F1F4A41 /* Cocoa.framework */; };
+		5F11E94BC90E77BDAEB93160 /* ProcessesTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4A7A87239DD6D342F8D356 /* ProcessesTable.swift */; };
+		600B44715960B748571E2708 /* SwaplightApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F22E5FD4E1D0ACAD789939 /* SwaplightApp.swift */; };
+		6312C4FA9AB451D5B8E2A7FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 203DA1EA88CF22D47F1F4A41 /* Cocoa.framework */; };
+		68FCB8C027A3D635A76781E9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C252C6AB2C163E67F80B956B /* SettingsView.swift */; };
+		6CDD6C7945414A9A70A107C9 /* Kernel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F850FA8775062252B7D78F0 /* Kernel.swift */; };
+		72C723B99100158BA47DDE93 /* DebugFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D023C392F4CCA1A750D26057 /* DebugFixture.swift */; };
+		887811FA8A6A7E14B891B218 /* SystemServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A79F5CD9F85CE58D1FF80E /* SystemServices.swift */; };
+		8C1D38A8301A3725511C48C7 /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141FB5C88CB34D34BC1ADDFB /* Inventory.swift */; };
+		9F52764A66E240B7173CBA99 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5440A356863920876D21C132 /* Actions.swift */; };
+		ACD136310FD6CC15C0CD38ED /* ActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB40D51AC90D3DA6F39E77BD /* ActionTests.swift */; };
+		C071D7A8389D514BA908DA8E /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76050FCDF348DF455CBC00C /* Models.swift */; };
+		C348746C37F4777B100A2994 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 203DA1EA88CF22D47F1F4A41 /* Cocoa.framework */; };
+		C5E2BD344C71A73BA77AB963 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 135DF3CEE24B7DFE732D01DA /* main.c */; };
+		CC97346E6950A7D5385D21B7 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1EE0595DA1E093E280B577 /* StoreTests.swift */; };
+		E552ABDF6F40E73C0A2D1082 /* Inspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE277BFC5F2BCBA215D8AEF /* Inspector.swift */; };
+		E7A75A801EAB29389747A32D /* DarwinControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D975837D7781470136CF010E /* DarwinControl.swift */; };
+		EAC568520A4FF2D0D0DDD458 /* InventoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB60E36CE8184A02F92BC7E /* InventoryTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5946A0BA3733F5974DD7E76A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D74980AD089F86F3C0FFA7FC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DC5935F63B0E129355FE329A;
+			remoteInfo = SwaplightDisposableChild;
+		};
+		AE1167446EE3F2B5D5AD46CF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D74980AD089F86F3C0FFA7FC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 20E6CDFCC08EB368460E1250;
+			remoteInfo = Swaplight;
+		};
+		D0ECE7F9ECFCE162682A7742 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D74980AD089F86F3C0FFA7FC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 20E6CDFCC08EB368460E1250;
+			remoteInfo = Swaplight;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		135DF3CEE24B7DFE732D01DA /* main.c */ = {isa = PBXFileReference; includeInIndex = 1; path = main.c; sourceTree = "<group>"; };
+		141FB5C88CB34D34BC1ADDFB /* Inventory.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Inventory.swift; path = Core/Inventory.swift; sourceTree = "<group>"; };
+		15A1E1CCF22E77E0123EDAB8 /* Store.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Store.swift; path = App/Store.swift; sourceTree = "<group>"; };
+		1BEA4B7ACA7D12095DA39911 /* SwaplightDisposableChild */ = {isa = PBXFileReference; includeInIndex = 0; path = SwaplightDisposableChild; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DFB546A82A6F0D077753F7B /* SwaplightTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwaplightTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		203DA1EA88CF22D47F1F4A41 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		462907860877214CD336D964 /* SwaplightUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SwaplightUITests.swift; sourceTree = "<group>"; };
+		4D4A7A87239DD6D342F8D356 /* ProcessesTable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProcessesTable.swift; path = Features/Inspector/ProcessesTable.swift; sourceTree = "<group>"; };
+		511D5C18B2DD323CC56E26B7 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5440A356863920876D21C132 /* Actions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Actions.swift; path = Core/Actions.swift; sourceTree = "<group>"; };
+		5E5433B57EF7144911527B29 /* Details.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Details.swift; path = Features/Inspector/Details.swift; sourceTree = "<group>"; };
+		6EB60E36CE8184A02F92BC7E /* InventoryTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryTests.swift; sourceTree = "<group>"; };
+		7F2C9E6B70F270CAAAE1671E /* DarwinSampler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DarwinSampler.swift; path = Platform/DarwinSampler.swift; sourceTree = "<group>"; };
+		7F850FA8775062252B7D78F0 /* Kernel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Kernel.swift; path = Platform/Kernel.swift; sourceTree = "<group>"; };
+		A3A79F5CD9F85CE58D1FF80E /* SystemServices.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SystemServices.swift; path = Platform/SystemServices.swift; sourceTree = "<group>"; };
+		B4F22E5FD4E1D0ACAD789939 /* SwaplightApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwaplightApp.swift; path = App/SwaplightApp.swift; sourceTree = "<group>"; };
+		BBE277BFC5F2BCBA215D8AEF /* Inspector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Inspector.swift; path = Features/Inspector/Inspector.swift; sourceTree = "<group>"; };
+		BC1EE0595DA1E093E280B577 /* StoreTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
+		C252C6AB2C163E67F80B956B /* SettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = Features/Settings/SettingsView.swift; sourceTree = "<group>"; };
+		C76050FCDF348DF455CBC00C /* Models.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Models.swift; path = Core/Models.swift; sourceTree = "<group>"; };
+		CAD4D1B18D703170368CF5DB /* SwaplightUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwaplightUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD42B479E3533C7DA2071A36 /* Swaplight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swaplight.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D023C392F4CCA1A750D26057 /* DebugFixture.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DebugFixture.swift; path = App/DebugFixture.swift; sourceTree = "<group>"; };
+		D975837D7781470136CF010E /* DarwinControl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DarwinControl.swift; path = Platform/DarwinControl.swift; sourceTree = "<group>"; };
+		DD025135E2A9BE578611626A /* Overview.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Overview.swift; path = Features/Overview/Overview.swift; sourceTree = "<group>"; };
+		DEF6BBB827B551498F2133EE /* AppsTable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppsTable.swift; path = Features/Inspector/AppsTable.swift; sourceTree = "<group>"; };
+		F7B11D1AE7449DC6FAF9EDB0 /* Workspace.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Workspace.swift; path = Platform/Workspace.swift; sourceTree = "<group>"; };
+		FB40D51AC90D3DA6F39E77BD /* ActionTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ActionTests.swift; sourceTree = "<group>"; };
+		FC4F5480F583048D04DF1116 /* Preferences.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Preferences.swift; path = Platform/Preferences.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		16A3C098D8ECA8415709FCE2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5CE76F2BD6B4198B7B25AADF /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5DE779686E5DB960CDB0AE4F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6312C4FA9AB451D5B8E2A7FA /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7EB6652084DF37AF1EA53467 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				210433DB36395661DCECDF3F /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1D2713E8357191DB9E134D9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C348746C37F4777B100A2994 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2B5EB7FA9477571A727AE203 = {
+			isa = PBXGroup;
+			children = (
+				41B21ECE1867779EC036F79D /* Products */,
+				2C8DD7112B043AE17C3794AD /* Frameworks */,
+				D32D204D934080984BDDF4FF /* Disposable Test Child */,
+				2B7DEC625421386CEF0BA7BA /* Swaplight */,
+				E72EF35EC17B2862E911551E /* Tests */,
+				643B7B6807041DF2D64B228F /* UITests */,
+			);
+			sourceTree = "<group>";
+		};
+		2B7DEC625421386CEF0BA7BA /* Swaplight */ = {
+			isa = PBXGroup;
+			children = (
+				D023C392F4CCA1A750D26057 /* DebugFixture.swift */,
+				15A1E1CCF22E77E0123EDAB8 /* Store.swift */,
+				B4F22E5FD4E1D0ACAD789939 /* SwaplightApp.swift */,
+				5440A356863920876D21C132 /* Actions.swift */,
+				141FB5C88CB34D34BC1ADDFB /* Inventory.swift */,
+				C76050FCDF348DF455CBC00C /* Models.swift */,
+				DEF6BBB827B551498F2133EE /* AppsTable.swift */,
+				5E5433B57EF7144911527B29 /* Details.swift */,
+				BBE277BFC5F2BCBA215D8AEF /* Inspector.swift */,
+				4D4A7A87239DD6D342F8D356 /* ProcessesTable.swift */,
+				DD025135E2A9BE578611626A /* Overview.swift */,
+				C252C6AB2C163E67F80B956B /* SettingsView.swift */,
+				D975837D7781470136CF010E /* DarwinControl.swift */,
+				7F2C9E6B70F270CAAAE1671E /* DarwinSampler.swift */,
+				7F850FA8775062252B7D78F0 /* Kernel.swift */,
+				FC4F5480F583048D04DF1116 /* Preferences.swift */,
+				A3A79F5CD9F85CE58D1FF80E /* SystemServices.swift */,
+				F7B11D1AE7449DC6FAF9EDB0 /* Workspace.swift */,
+				511D5C18B2DD323CC56E26B7 /* Assets.xcassets */,
+			);
+			name = Swaplight;
+			path = Swaplight;
+			sourceTree = "<group>";
+		};
+		2C8DD7112B043AE17C3794AD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D32D7DE0BEC5667663996967 /* OS X */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		41B21ECE1867779EC036F79D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD42B479E3533C7DA2071A36 /* Swaplight.app */,
+				1DFB546A82A6F0D077753F7B /* SwaplightTests.xctest */,
+				CAD4D1B18D703170368CF5DB /* SwaplightUITests.xctest */,
+				1BEA4B7ACA7D12095DA39911 /* SwaplightDisposableChild */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		643B7B6807041DF2D64B228F /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				462907860877214CD336D964 /* SwaplightUITests.swift */,
+			);
+			name = UITests;
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		D32D204D934080984BDDF4FF /* Disposable Test Child */ = {
+			isa = PBXGroup;
+			children = (
+				135DF3CEE24B7DFE732D01DA /* main.c */,
+			);
+			name = "Disposable Test Child";
+			path = Tools/DisposableChild;
+			sourceTree = "<group>";
+		};
+		D32D7DE0BEC5667663996967 /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				203DA1EA88CF22D47F1F4A41 /* Cocoa.framework */,
+			);
+			name = "OS X";
+			sourceTree = "<group>";
+		};
+		E72EF35EC17B2862E911551E /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				FB40D51AC90D3DA6F39E77BD /* ActionTests.swift */,
+				6EB60E36CE8184A02F92BC7E /* InventoryTests.swift */,
+				BC1EE0595DA1E093E280B577 /* StoreTests.swift */,
+			);
+			name = Tests;
+			path = Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		20E6CDFCC08EB368460E1250 /* Swaplight */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AF920121952F43D90BBF54D /* Build configuration list for PBXNativeTarget "Swaplight" */;
+			buildPhases = (
+				33A4E14C2E913C64456BB687 /* Sources */,
+				16A3C098D8ECA8415709FCE2 /* Frameworks */,
+				F01D0411D10E01F572FBB54E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Swaplight;
+			productName = Swaplight;
+			productReference = CD42B479E3533C7DA2071A36 /* Swaplight.app */;
+			productType = "com.apple.product-type.application";
+		};
+		44C032403F197B3177FDF009 /* SwaplightTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ADB56A25C804C50560C0138B /* Build configuration list for PBXNativeTarget "SwaplightTests" */;
+			buildPhases = (
+				AAC07CB0438D2B7915A2F3D5 /* Sources */,
+				E1D2713E8357191DB9E134D9 /* Frameworks */,
+				17880DDAA4E61FE86039A19D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A0F19BD1CBE011E4C92B3448 /* PBXTargetDependency */,
+				2D6E0D0F53D462296C61D5B9 /* PBXTargetDependency */,
+			);
+			name = SwaplightTests;
+			productName = SwaplightTests;
+			productReference = 1DFB546A82A6F0D077753F7B /* SwaplightTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		AE2FC2E554E35D458F521EE4 /* SwaplightUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BECEB3014D2D7EC3750283E5 /* Build configuration list for PBXNativeTarget "SwaplightUITests" */;
+			buildPhases = (
+				4635778D5EC28C44AEB32C68 /* Sources */,
+				7EB6652084DF37AF1EA53467 /* Frameworks */,
+				C925C015C8E4B349D8C409AC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6DA4A24AFCFDA26402C2EAF3 /* PBXTargetDependency */,
+			);
+			name = SwaplightUITests;
+			productName = SwaplightUITests;
+			productReference = CAD4D1B18D703170368CF5DB /* SwaplightUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		DC5935F63B0E129355FE329A /* SwaplightDisposableChild */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E0E057FA95BF2A93C120AEC5 /* Build configuration list for PBXNativeTarget "SwaplightDisposableChild" */;
+			buildPhases = (
+				39F5007EEA70DE52BFB4FEAF /* Sources */,
+				5DE779686E5DB960CDB0AE4F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwaplightDisposableChild;
+			productName = SwaplightDisposableChild;
+			productReference = 1BEA4B7ACA7D12095DA39911 /* SwaplightDisposableChild */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D74980AD089F86F3C0FFA7FC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = 316C8F04D5DC9A3142C9BA39 /* Build configuration list for PBXProject "Swaplight" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2B5EB7FA9477571A727AE203;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 41B21ECE1867779EC036F79D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				20E6CDFCC08EB368460E1250 /* Swaplight */,
+				44C032403F197B3177FDF009 /* SwaplightTests */,
+				AE2FC2E554E35D458F521EE4 /* SwaplightUITests */,
+				DC5935F63B0E129355FE329A /* SwaplightDisposableChild */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		17880DDAA4E61FE86039A19D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C925C015C8E4B349D8C409AC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F01D0411D10E01F572FBB54E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FAEA5FF1AEB885A4875081D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		33A4E14C2E913C64456BB687 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72C723B99100158BA47DDE93 /* DebugFixture.swift in Sources */,
+				4825BF24662387699430CBBC /* Store.swift in Sources */,
+				600B44715960B748571E2708 /* SwaplightApp.swift in Sources */,
+				9F52764A66E240B7173CBA99 /* Actions.swift in Sources */,
+				8C1D38A8301A3725511C48C7 /* Inventory.swift in Sources */,
+				C071D7A8389D514BA908DA8E /* Models.swift in Sources */,
+				40D032C422C41D9362F4870B /* AppsTable.swift in Sources */,
+				33C8A899FEB3C55D950C3CB6 /* Details.swift in Sources */,
+				E552ABDF6F40E73C0A2D1082 /* Inspector.swift in Sources */,
+				5F11E94BC90E77BDAEB93160 /* ProcessesTable.swift in Sources */,
+				3BF72F8B1B79DBD44FB72C5D /* Overview.swift in Sources */,
+				68FCB8C027A3D635A76781E9 /* SettingsView.swift in Sources */,
+				E7A75A801EAB29389747A32D /* DarwinControl.swift in Sources */,
+				4A0535747D38AFFF32A3AD92 /* DarwinSampler.swift in Sources */,
+				6CDD6C7945414A9A70A107C9 /* Kernel.swift in Sources */,
+				1215080483A73EF99F2A38E6 /* Preferences.swift in Sources */,
+				887811FA8A6A7E14B891B218 /* SystemServices.swift in Sources */,
+				092C3991BED5577D3A936D95 /* Workspace.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		39F5007EEA70DE52BFB4FEAF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5E2BD344C71A73BA77AB963 /* main.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4635778D5EC28C44AEB32C68 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B603C2C875439B679CF9F7B /* SwaplightUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAC07CB0438D2B7915A2F3D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACD136310FD6CC15C0CD38ED /* ActionTests.swift in Sources */,
+				EAC568520A4FF2D0D0DDD458 /* InventoryTests.swift in Sources */,
+				CC97346E6950A7D5385D21B7 /* StoreTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2D6E0D0F53D462296C61D5B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Swaplight;
+			target = 20E6CDFCC08EB368460E1250 /* Swaplight */;
+			targetProxy = D0ECE7F9ECFCE162682A7742 /* PBXContainerItemProxy */;
+		};
+		6DA4A24AFCFDA26402C2EAF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Swaplight;
+			target = 20E6CDFCC08EB368460E1250 /* Swaplight */;
+			targetProxy = AE1167446EE3F2B5D5AD46CF /* PBXContainerItemProxy */;
+		};
+		A0F19BD1CBE011E4C92B3448 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwaplightDisposableChild;
+			target = DC5935F63B0E129355FE329A /* SwaplightDisposableChild */;
+			targetProxy = 5946A0BA3733F5974DD7E76A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		06DFC431235E3D694F47583B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nukodes.swaplighttests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swaplight.app/Contents/MacOS/Swaplight";
+			};
+			name = Release;
+		};
+		156BC8655761204994F9E71C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nukodes.swaplight;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		565A7BC9C88DCD2D2B147E6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nukodes.swaplightuitests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+				TEST_TARGET_NAME = Swaplight;
+			};
+			name = Debug;
+		};
+		955924A1569A7C91E3C8D8ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		956ADD5EA12C66F35A1AB11B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		C3A6C35A13773361CAEAC581 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nukodes.swaplight;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		CFEA76371E3AFBC9394F2FB8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nukodes.swaplightuitests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+				TEST_TARGET_NAME = Swaplight;
+			};
+			name = Release;
+		};
+		D78F524733290B425D79A392 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		E3B4F95DF1BF550912E1D8CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		E9BF39427C451AF6B2621F3B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nukodes.swaplighttests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swaplight.app/Contents/MacOS/Swaplight";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0AF920121952F43D90BBF54D /* Build configuration list for PBXNativeTarget "Swaplight" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				156BC8655761204994F9E71C /* Release */,
+				C3A6C35A13773361CAEAC581 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		316C8F04D5DC9A3142C9BA39 /* Build configuration list for PBXProject "Swaplight" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				956ADD5EA12C66F35A1AB11B /* Debug */,
+				D78F524733290B425D79A392 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ADB56A25C804C50560C0138B /* Build configuration list for PBXNativeTarget "SwaplightTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06DFC431235E3D694F47583B /* Release */,
+				E9BF39427C451AF6B2621F3B /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BECEB3014D2D7EC3750283E5 /* Build configuration list for PBXNativeTarget "SwaplightUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFEA76371E3AFBC9394F2FB8 /* Release */,
+				565A7BC9C88DCD2D2B147E6C /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E0E057FA95BF2A93C120AEC5 /* Build configuration list for PBXNativeTarget "SwaplightDisposableChild" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				955924A1569A7C91E3C8D8ED /* Release */,
+				E3B4F95DF1BF550912E1D8CB /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D74980AD089F86F3C0FFA7FC /* Project object */;
+}
